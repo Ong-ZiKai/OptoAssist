@@ -1,4 +1,56 @@
-﻿@{
+﻿@model IEnumerable<Asst.Models.Message>
+
+@{
+    ViewBag.Title = "Ask Topic";
+}
+
+<div class="container chat">
+    @{
+        if (Model.ToList().Count > 0)
+        {
+            int count = 0;
+            foreach (var item in Model)
+            {
+                if (count % 2 == 1)
+                {
+                    <div class="row">
+                        <div class="col-6"></div>
+                        <div class="col-6">
+                            <div class="message user">
+                                @item.Content
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col">
+                            <div class="message response">
+                                @item.Content
+                            </div>
+                        </div>
+                        <div class="col-6"></div>
+                    </div>
+                }
+                count++;
+            }
+        }
+    }
+    <div class="row">
+        <div class="col">
+            <form asp-controller="Questions" asp-action="AskQuestions" method="post">
+                <div class="form-group">
+                    <label for="topic">Enter a topic:</label>
+                    <input type="text" class="form-control" name="topic" id="topic" required />
+                    <span><button type="submit" class="btn btn-primary">Submit</button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*@{
     ViewBag.Title = "Ask Topic";
 }
 
@@ -20,3 +72,4 @@
         }
     }
 </ul>
+*@
