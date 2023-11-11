@@ -25,6 +25,10 @@ body {
     display: inline-block;
 }
 
+.msgcontent {
+    white-space: pre-line;
+}
+
 .user {
     background-color: #d4edda;
     margin-left: 0px;
@@ -36,7 +40,8 @@ body {
 
 .chat {
     color: white;
-    background-color: black;
+    background-color: rgb(66, 66, 66);
+    min-height:600px;
     padding: 30px;
     border-radius: 10px;
 }
