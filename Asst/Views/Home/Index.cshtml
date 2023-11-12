@@ -1,8 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = null;
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewData["Title"] - Asst</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Asst.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-5" style="padding-top:10%;">
+                <img src="images/logo.png" style="height:25%;border-radius:50%" />
+                <h1><b>OptoAssist</b></h1>
+                <h3>Enhance your practice with precision.</h3>
+                <h4>Master the art of history taking!</h4>
+                <br />
+                <a class="startbutton" href="~/Questions/AskQuestions">Start</a>
+            </div>
+            <div class="col-7">
+                <img src="images/background.png" style="height:100%;"/>
+            </div>
+        </div>
+    </div>
+</body>

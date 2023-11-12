@@ -17,6 +17,20 @@ body {
   margin-bottom: 60px;
 }
 
+.startbutton {
+    background-color: rgb(42, 166, 209);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 10px 30px 10px 30px;
+    transition: background-color 0.3s ease;
+}
+
+.startbutton:hover {
+    color:white;
+    background-color: rgb(34, 111, 137);
+}
+
 .message {
     color: black;
     padding: 10px;
