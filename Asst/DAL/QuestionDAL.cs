@@ -66,7 +66,7 @@ namespace Asst.DAL
 
         public string Add(string topic,string question )
         {
-            string questionlist = '';
+            string questionlist = "";
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SQL statement that selects the right topic and question
