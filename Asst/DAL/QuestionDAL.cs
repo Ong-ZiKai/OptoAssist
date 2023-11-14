@@ -63,6 +63,31 @@ namespace Asst.DAL
 
             return questions;
         }
+
+        public string Add(string topic, string question)
+        {
+            // Create a SqlCommand object from the connection object
+            SqlCommand cmd = conn.CreateCommand();
+            // Specify an UPDATE SQL statement
+                cmd.CommandText = @"UPDATE QuestionTable SET question = @question
+                            WHERE topic = @topic";
+
+                // Define the parameters used in the SQL statement
+                cmd.Parameters.Clear(); // Clear previous parameters
+                cmd.Parameters.AddWithValue("@question", question);
+                cmd.Parameters.AddWithValue("@topic", topic);
+
+                // Open a database connection
+                conn.Open();
+
+                // ExecuteNonQuery is used for UPDATE
+                cmd.ExecuteNonQuery();
+
+                // Close the database connection
+                conn.Close();
+            return topic;
+        }
+
     }
 
 }

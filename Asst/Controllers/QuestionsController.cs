@@ -72,5 +72,34 @@ namespace Asst.Controllers
 
             return View(msgList);
         }
+
+
+
+        public ActionResult Add()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Add(string topic, string question)
+        {
+            QuestionDAL questionDAL = new QuestionDAL();
+
+            List<QuestionModel> questions = questionDAL.GetQuestions();
+
+            // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
+            QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
+            if (topicQuestions != null)
+            {
+                topicQuestions.Questions.Add(question);
+                questions.Remove(questions[0]);
+                string questionJson = Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions);
+                questionDAL.Add(topic, questionJson);
+            }
+                // Optionally, you can handle the result and provide feedback to the user
+
+                return RedirectToAction("AskQuestions");
+        }
+
+
     }
 }
