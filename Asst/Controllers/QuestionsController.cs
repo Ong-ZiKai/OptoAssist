@@ -24,7 +24,15 @@ namespace Asst.Controllers
             }
             return View(msgList);
         }
+        public ActionResult DeleteQuestions()
+        { 
+            return View(); 
+        }
 
+        public ActionResult AddQuestions()
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult AskQuestions(string topic)

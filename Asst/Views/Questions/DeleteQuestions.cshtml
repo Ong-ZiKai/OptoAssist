@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Asst.Models.QuestionModel>
+
+@{
+    ViewBag.Title = "DeleteQuestions";
+}
+
+<div class="view-qn">
+    <div class="main-content">
+        <h5>Keyword:</h5>
+        <!-- Dropdown List for Topics-->
+        @* @using (Html.BeginForm("GetTopic", "QuestionsController", FormMethod.Post))
+        {
+            @Html.DropDownListFor(model => model.SelectedItemId, Model.DropdownItems, "Select an item")
+            <input type="submit" value="Submit" />
+        } *@
+        @* @if (Model.ToList().Count > 0)
+        { *@
+        <div class="table-responsive">
+            <table style ="max-height:200px; border-color: lightgray" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="background-color:lightgray">Questions</th>
+                        <th style="background-color:lightgray"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @* @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Questions</td>
+                            <td>
+                                <a asp-action="Delete" asp-controller="Questions"
+                                   asp-route-id="@item.Topic">Delete</a>
+                            </td>
+                        </tr>
+                    } *@
+                </tbody>
+            </table>
+        </div>
+        @* }
+        else{<span style="color:orange">No Questions yet!</span>} *@
+    </div>
+</div>

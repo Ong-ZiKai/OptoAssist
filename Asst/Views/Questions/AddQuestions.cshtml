@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Asst.Models.QuestionModel>
+@{
+    ViewData["Title"] = "AddQuestions";
+}
+
+<div class="view-qn">
+    <div class="main-content">
+        <h5>Keyword:</h5>
+        <!-- Dropdown List for Topics-->
+        @* @using (Html.BeginForm("GetTopic", "QuestionsController", FormMethod.Post))
+        {
+        @Html.DropDownListFor(model => model.SelectedItemId, Model.DropdownItems, "Select an item")
+        <input type="submit" value="Submit" />
+        } *@
+        <h5>New Question:</h5>
+        <input class="add-qn"type="text" placeholder="Enter a new question">
+        <button class="new-qn">Submit</button>
+    </div>
+</div>
