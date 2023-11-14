@@ -63,6 +63,51 @@ namespace Asst.DAL
 
             return questions;
         }
+
+        public string Add(string topic,string question )
+        {
+            string questionlist = '';
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SQL statement that selects the right topic and question
+            cmd.CommandText = @"SELECT question FROM Member
+                                WHERE topic = @selectedtopic";
+            //Define the parameter used in SQL statement, value for the
+            cmd.Parameters.AddWithValue("@selectedtopic", topic);
+            //Open a database connection
+            conn.Open();
+            //executing sql thru a datareader
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows) 
+            {
+                //Read the record from database
+                while (reader.Read())
+                {
+                    // Fill question with value from the data reader
+                    questionlist = reader.GetString(1);
+                }
+            }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+
+            //Specifed an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE QuestionTable SET question=@questionlist
+                                WHERE topic = @topic";
+
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@questionlist", questionlist);
+            cmd.Parameters.AddWithValue("@topic", topic);
+
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE
+            cmd.ExecuteNonQuery();
+            conn.Close() ;
+            return "successful!";
+        }
+
     }
 
 }
