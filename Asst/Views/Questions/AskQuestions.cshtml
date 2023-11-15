@@ -4,7 +4,7 @@
     ViewBag.Title = "Ask Topic";
 }
 
-<div class="container-fluid h-100 chat">
+<div class="container-fluid h-100 chat" id="main-chat">
     @{
         if (Model.ToList().Count > 0)
         {
@@ -13,9 +13,9 @@
             {
                 if (count % 2 == 1)
                 {
-                    <div class="row">
-                        <div class="col-6"></div>
-                        <div class="col-6">
+                    <div class="row" >
+                        <div class="col-9"></div>
+                        <div class="col-3">
                             <div class="message user">
                                 <b>USER</b>
                                 <div class="msgcontent">@item.Content</div>
