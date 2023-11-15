@@ -1,0 +1,31 @@
+﻿@model IEnumerable<string>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table style="max-height: 200px; border-color: lightgray" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="background-color: lightgray">Questions</th>
+                    <th style="background-color: lightgray"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var question in Model)
+                {
+                    <tr>
+                        <td>@question</td>
+                        <td>
+                            <!-- You can customize this delete link based on your requirements -->
+                            <a href="#">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color: orange">No Questions yet!</span>
+}

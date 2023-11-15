@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Asst.DAL
 {
@@ -99,6 +100,32 @@ namespace Asst.DAL
             // Close the database connection
             conn.Close();
             return topic;
+        }
+        public List<SelectListItem> GetTopic()
+        {
+            List<SelectListItem> topicList = new List<SelectListItem>();
+
+            try
+            {
+                conn.Open();
+
+                // Assuming the table structure has 'Topic' column
+                string query = "SELECT DISTINCT Topic FROM QuestionTable";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string topic = reader["Topic"].ToString();
+                    topicList.Add(new SelectListItem { Text = topic, Value = topic });
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return topicList;
         }
 
     }
