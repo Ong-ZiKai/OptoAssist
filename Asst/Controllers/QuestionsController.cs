@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using Asst.DAL;
 using Asst.Models;
-using System.Diagnostics;
-using Asst.DAL;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Asst.Controllers
 {
     public class QuestionsController : Controller
     {
-        
+
 
 
 
@@ -25,8 +23,8 @@ namespace Asst.Controllers
             return View(msgList);
         }
         public ActionResult DeleteQuestions()
-        { 
-            return View(); 
+        {
+            return View();
         }
 
         public ActionResult AddQuestions()
@@ -39,8 +37,8 @@ namespace Asst.Controllers
         {
             QuestionDAL questionDAL = new QuestionDAL();
 
-            List<QuestionModel> questions = questionDAL.GetQuestions();
-            
+            List<QuestionModel> questions = questionDAL.GetQuestions(1);
+
             string msgTextList = HttpContext.Session.GetString("MsgList");
             msgTextList += topic + "%&%";
 
@@ -76,11 +74,11 @@ namespace Asst.Controllers
 
 
         [HttpPost]
-        public ActionResult AddQuestions(string topic, string question)
+        public ActionResult AddQuestions(int type, string topic, string question)
         {
             QuestionDAL questionDAL = new QuestionDAL();
 
-            List<QuestionModel> questions = questionDAL.GetQuestions();
+            List<QuestionModel> questions = questionDAL.GetQuestions(type);
 
             // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
             QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
@@ -89,14 +87,15 @@ namespace Asst.Controllers
                 topicQuestions.Questions.Add(question);
 
                 // Update the list in the database
-                questionDAL.Add(topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
+                questionDAL.Add(type, topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
             }
             else
             {
                 // Create a new topic and question entry
                 List<string> newQuestions = new List<string> { question };
-                questionDAL.Add(topic, Newtonsoft.Json.JsonConvert.SerializeObject(newQuestions));
+                questionDAL.Add(type, topic, Newtonsoft.Json.JsonConvert.SerializeObject(newQuestions));
             }
+
 
             // Optionally, you can handle the result and provide feedback to the user
             return RedirectToAction("AddQuestions");

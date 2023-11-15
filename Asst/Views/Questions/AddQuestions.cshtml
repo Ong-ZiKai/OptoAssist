@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Asst.Models.QuestionModel>
 @{
     ViewData["Title"] = "AddQuestions";
+
+
 }
 
 <div class="view-qn">
@@ -10,7 +12,10 @@
             <input class="add-qn" type="text" name="topic" placeholder="Enter a Topic">
             <h5>New Question:</h5>
             <input class="add-qn" type="text" name="question" placeholder="Enter a new question">
+            <h5>For adults or children:</h5>
+            @*<input class="add-qn" type="text" name="type" placeholder="Enter 1 for children, 2 for adult">*@
             <button class="new-qn" type="submit">Submit</button>
+            <span name="type">1</span>
         </form>
     </div>
 </div>

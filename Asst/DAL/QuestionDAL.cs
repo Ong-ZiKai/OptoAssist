@@ -1,10 +1,5 @@
-﻿using System.Data.SqlClient;
-using Asst.Models;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
+﻿using Asst.Models;
 using System.Data.SqlClient;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace Asst.DAL
 {
@@ -27,16 +22,23 @@ namespace Asst.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public List<QuestionModel> GetQuestions()
+        public List<QuestionModel> GetQuestions(int type)
         {
             List<QuestionModel> questions = new List<QuestionModel>();
 
             try
             {
                 conn.Open();
-
+                string query = "";
                 // Assuming the table structure has 'Topic' and 'question' columns
-                string query = "SELECT Topic, question FROM QuestionTable";
+                if (type == 2)
+                {
+                    query = "SELECT Topic, question FROM QuestionTable";
+                }
+                else
+                {
+                    query = "SELECT Topic, question FROM QuestionTable";
+                }
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -64,12 +66,18 @@ namespace Asst.DAL
             return questions;
         }
 
-        public string Add(string topic, string question)
+        public string Add(int type, string topic, string question)
         {
             // Create a SqlCommand object from the connection object
             SqlCommand cmd = conn.CreateCommand();
-
-            cmd.CommandText = "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic";
+            if (type == 1)
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
+            }
+            else
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic";
+            }
             cmd.Parameters.AddWithValue("@topic", topic);
             // Open a database connection
             conn.Open();
@@ -100,6 +108,7 @@ namespace Asst.DAL
             conn.Close();
             return topic;
         }
+
 
     }
 
