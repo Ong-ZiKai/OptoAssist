@@ -75,12 +75,8 @@ namespace Asst.Controllers
 
 
 
-        public ActionResult Add()
-        {
-            return View();
-        }
         [HttpPost]
-        public ActionResult Add(string topic, string question)
+        public ActionResult AddQuestions(string topic, string question)
         {
             QuestionDAL questionDAL = new QuestionDAL();
 
@@ -91,14 +87,21 @@ namespace Asst.Controllers
             if (topicQuestions != null)
             {
                 topicQuestions.Questions.Add(question);
-                questions.Remove(questions[0]);
-                string questionJson = Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions);
-                questionDAL.Add(topic, questionJson);
-            }
-                // Optionally, you can handle the result and provide feedback to the user
 
-                return RedirectToAction("AskQuestions");
+                // Update the list in the database
+                questionDAL.Add(topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
+            }
+            else
+            {
+                // Create a new topic and question entry
+                List<string> newQuestions = new List<string> { question };
+                questionDAL.Add(topic, Newtonsoft.Json.JsonConvert.SerializeObject(newQuestions));
+            }
+
+            // Optionally, you can handle the result and provide feedback to the user
+            return RedirectToAction("AddQuestions");
         }
+
 
 
     }
