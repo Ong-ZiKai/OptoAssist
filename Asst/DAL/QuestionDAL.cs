@@ -72,7 +72,7 @@ namespace Asst.DAL
         {
             // Create a SqlCommand object from the connection object
             SqlCommand cmd = conn.CreateCommand();
-            if (type == 2)
+            if (type == 1)
             {
                 cmd.CommandText = "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
             }
@@ -91,11 +91,27 @@ namespace Asst.DAL
 
             if (existingTopicCount > 0)
             {
-                cmd.CommandText = "UPDATE QuestionTable SET question = @question WHERE topic = @topic";
+                if (type == 1)
+                {
+                    cmd.CommandText = "UPDATE QuestionTable SET question = @question WHERE topic = @topic";
+                }
+                else
+                {
+                    cmd.CommandText = "UPDATE QuestionTableChild SET question = @question WHERE topic = @topic";
+
+                }
             }
             else
             {
-                cmd.CommandText = "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)";
+                if (type == 1)
+                {
+                    cmd.CommandText = "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)";
+                }
+                else
+                {
+                    cmd.CommandText = "INSERT INTO QuestionTableChild (topic, question) VALUES (@topic, @question)";
+
+                }
             }
             // Define the parameters used in the SQL statement
             cmd.Parameters.Clear(); // Clear previous parameters
