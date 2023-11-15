@@ -68,23 +68,36 @@ namespace Asst.DAL
         {
             // Create a SqlCommand object from the connection object
             SqlCommand cmd = conn.CreateCommand();
-            // Specify an UPDATE SQL statement
-                cmd.CommandText = @"UPDATE QuestionTable SET question = @question
-                            WHERE topic = @topic";
 
-                // Define the parameters used in the SQL statement
-                cmd.Parameters.Clear(); // Clear previous parameters
-                cmd.Parameters.AddWithValue("@question", question);
-                cmd.Parameters.AddWithValue("@topic", topic);
+            cmd.CommandText = "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic";
+            cmd.Parameters.AddWithValue("@topic", topic);
+            // Open a database connection
+            conn.Open();
 
-                // Open a database connection
-                conn.Open();
+            int existingTopicCount = (int)cmd.ExecuteScalar();
 
-                // ExecuteNonQuery is used for UPDATE
-                cmd.ExecuteNonQuery();
+            // Clear previous parameters
+            cmd.Parameters.Clear();
 
-                // Close the database connection
-                conn.Close();
+            if (existingTopicCount > 0)
+            {
+                cmd.CommandText = "UPDATE QuestionTable SET question = @question WHERE topic = @topic";
+            }
+            else
+            {
+                cmd.CommandText = "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)";
+            }
+            // Define the parameters used in the SQL statement
+            cmd.Parameters.Clear(); // Clear previous parameters
+            cmd.Parameters.AddWithValue("@question", question);
+            cmd.Parameters.AddWithValue("@topic", topic);
+
+
+            // ExecuteNonQuery is used for UPDATE
+            cmd.ExecuteNonQuery();
+
+            // Close the database connection
+            conn.Close();
             return topic;
         }
 
