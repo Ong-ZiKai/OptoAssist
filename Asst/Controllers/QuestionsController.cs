@@ -25,7 +25,7 @@ namespace Asst.Controllers
         }
         public ActionResult AskQuestionschild()
         {
-            string msgTextList = " " + HttpContext.Session.GetString("MsgList");
+            string msgTextList = " " + HttpContext.Session.GetString("MsgListChild");
             string[] msgArray = msgTextList.Split("%&%");
             List<Message> msgList = new List<Message>();
             msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
@@ -168,7 +168,7 @@ namespace Asst.Controllers
 
             List<QuestionModel> questions = questionDAL.GetQuestions(2);
 
-            string msgTextList = HttpContext.Session.GetString("MsgList");
+            string msgTextList = HttpContext.Session.GetString("MsgListChild");
             msgTextList += topic + "%&%";
 
             // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
@@ -188,7 +188,7 @@ namespace Asst.Controllers
                 msgTextList += "Invalid topic or questions not found.%&%";
             }
 
-            HttpContext.Session.SetString("MsgList", msgTextList);
+            HttpContext.Session.SetString("MsgListChild", msgTextList);
             string[] msgArray = msgTextList.Split("%&%");
             List<Message> msgList = new List<Message>();
             msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
