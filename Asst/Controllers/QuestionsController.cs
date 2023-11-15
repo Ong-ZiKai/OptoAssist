@@ -4,6 +4,8 @@ using Asst.Models;
 using System.Diagnostics;
 using Asst.DAL;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Humanizer;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Asst.Controllers
 {
@@ -34,6 +36,32 @@ namespace Asst.Controllers
             ViewData["CitiesList"] = topics;
             return View(); 
         }
+        [HttpPost]
+        public ActionResult DeleteQuestion(string topic, string question)
+        {
+            QuestionDAL questionDAL = new QuestionDAL();
+
+            List<QuestionModel> questions = questionDAL.GetQuestions();
+
+            // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
+            QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
+            if (topicQuestions != null)
+            {
+                // Remove the question from the list
+                topicQuestions.Questions.Remove(question);
+
+                // Update the list in the database
+                questionDAL.Add(topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
+            }
+
+            // Return a JSON response to indicate success (if needed)
+            return Json(new { success = true });
+        }
+
+
+
+
+
         [HttpGet]
         public ActionResult GetQuestionsByTopic(string topic)
         {
@@ -44,7 +72,7 @@ namespace Asst.Controllers
             // Return only the questions for the selected topic
             return PartialView("_QuestionsPartial", topicQuestions?.Questions);
         }
-
+        
         public ActionResult AddQuestions()
         {
             return View();
