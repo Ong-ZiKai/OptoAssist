@@ -2,42 +2,74 @@
 
 @{
     ViewBag.Title = "DeleteQuestions";
+    var topics = ViewData["CitiesList"] as List<SelectListItem>;
 }
 
 <div class="view-qn">
     <div class="main-content">
         <h5>Keyword:</h5>
-        <!-- Dropdown List for Topics-->
-        @* @using (Html.BeginForm("GetTopic", "QuestionsController", FormMethod.Post))
+
+        @using (Html.BeginForm("Delete", "Questions", FormMethod.Post, new { id = "topicForm" }))
         {
-            @Html.DropDownListFor(model => model.SelectedItemId, Model.DropdownItems, "Select an item")
-            <input type="submit" value="Submit" />
-        } *@
-        @* @if (Model.ToList().Count > 0)
-        { *@
-        <div class="table-responsive">
-            <table style ="max-height:200px; border-color: lightgray" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th style="background-color:lightgray">Questions</th>
-                        <th style="background-color:lightgray"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @* @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Questions</td>
-                            <td>
-                                <a asp-action="Delete" asp-controller="Questions"
-                                   asp-route-id="@item.Topic">Delete</a>
-                            </td>
-                        </tr>
-                    } *@
-                </tbody>
-            </table>
+            <div class="form-group">
+                <label for="topic">Select Topic:</label>
+                @{
+                    var defaultTopic = Model?.FirstOrDefault()?.Topic ?? "";
+                }
+                @Html.DropDownListFor(model => defaultTopic, topics, new { @class = "form-control", id = "topicDropdown" })
+            </div>
+        }
+        <div id="questionsContainer">
+
+            @if (Model != null && Model.ToList().Count > 0)
+            {
+                <div class="table-responsive">
+                    <table style="max-height:200px; border-color: lightgray" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="background-color:lightgray">Questions</th>
+                                <th style="background-color:lightgray"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Questions</td>
+                                    <td>
+                                        <a asp-action="Delete" asp-controller="Questions" asp-route-id="@item.Topic">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <span style="color:orange">No Questions yet!</span>
+            }
         </div>
-        @* }
-        else{<span style="color:orange">No Questions yet!</span>} *@
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#topicDropdown').change(function () {
+            var selectedTopic = $(this).val();
+            $.ajax({
+                url: '@Url.Action("GetQuestionsByTopic", "Questions")',
+                type: 'GET',
+                data: { topic: selectedTopic },
+                success: function (result) {
+                    $('#questionsContainer').html(result);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+

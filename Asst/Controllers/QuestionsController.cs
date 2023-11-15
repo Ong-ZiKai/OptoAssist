@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Asst.Models;
 using System.Diagnostics;
 using Asst.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Asst.Controllers
 {
@@ -25,8 +26,23 @@ namespace Asst.Controllers
             return View(msgList);
         }
         public ActionResult DeleteQuestions()
-        { 
+        {
+            QuestionDAL questionDAL = new QuestionDAL();
+            List<SelectListItem> topics = questionDAL.GetTopic();
+
+            // Use 'topics' as needed, pass it to the view, etc.
+            ViewData["CitiesList"] = topics;
             return View(); 
+        }
+        [HttpGet]
+        public ActionResult GetQuestionsByTopic(string topic)
+        {
+            QuestionDAL questionDAL = new QuestionDAL();
+            List<QuestionModel> questions = questionDAL.GetQuestions();
+            QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
+
+            // Return only the questions for the selected topic
+            return PartialView("_QuestionsPartial", topicQuestions?.Questions);
         }
 
         public ActionResult AddQuestions()
@@ -102,7 +118,7 @@ namespace Asst.Controllers
             return RedirectToAction("AddQuestions");
         }
 
-
+       
 
     }
 }
