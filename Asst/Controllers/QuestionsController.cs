@@ -41,7 +41,7 @@ namespace Asst.Controllers
         {
             QuestionDAL questionDAL = new QuestionDAL();
 
-            List<QuestionModel> questions = questionDAL.GetQuestions();
+            List<QuestionModel> questions = questionDAL.GetQuestions(1);
 
             // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
             QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
@@ -51,7 +51,7 @@ namespace Asst.Controllers
                 topicQuestions.Questions.Remove(question);
 
                 // Update the list in the database
-                questionDAL.Add(topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
+                questionDAL.Add(1,topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
             }
 
             // Return a JSON response to indicate success (if needed)
