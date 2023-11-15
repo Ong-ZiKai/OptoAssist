@@ -239,7 +239,7 @@ namespace Asst.Controllers
         public ActionResult GetQuestionsByTopicchild(string topic)
         {
             QuestionDAL questionDAL = new QuestionDAL();
-            List<QuestionModel> questions = questionDAL.GetQuestions(1);
+            List<QuestionModel> questions = questionDAL.GetQuestions(2);
             QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
 
             // Return only the questions for the selected topic
