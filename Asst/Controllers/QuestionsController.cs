@@ -23,18 +23,6 @@ namespace Asst.Controllers
             }
             return View(msgList);
         }
-        public ActionResult AskQuestionschild()
-        {
-            string msgTextList = " " + HttpContext.Session.GetString("MsgList");
-            string[] msgArray = msgTextList.Split("%&%");
-            List<Message> msgList = new List<Message>();
-            msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
-            for (int i = 0; i < msgArray.Length - 1; i++)
-            {
-                msgList.Add(new Message { Content = msgArray[i] });
-            }
-            return View(msgList);
-        }
         public ActionResult DeleteQuestions()
         {
             QuestionDAL questionDAL = new QuestionDAL();
@@ -66,11 +54,6 @@ namespace Asst.Controllers
             // Return a JSON response to indicate success (if needed)
             return Json(new { success = true });
         }
-
-
-
-
-
         [HttpGet]
         public ActionResult GetQuestionsByTopic(string topic)
         {
@@ -159,7 +142,19 @@ namespace Asst.Controllers
             return RedirectToAction("AddQuestions");
         }
 
-       
+
+        public ActionResult AskQuestionschild()
+        {
+            string msgTextList = " " + HttpContext.Session.GetString("MsgList");
+            string[] msgArray = msgTextList.Split("%&%");
+            List<Message> msgList = new List<Message>();
+            msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
+            for (int i = 0; i < msgArray.Length - 1; i++)
+            {
+                msgList.Add(new Message { Content = msgArray[i] });
+            }
+            return View(msgList);
+        }
 
         [HttpPost]
         public ActionResult AskQuestionschild(string topic)
@@ -224,22 +219,17 @@ namespace Asst.Controllers
                 topicQuestions.Questions.Remove(question);
 
                 // Update the list in the database
-                questionDAL.Add(1, topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
+                questionDAL.Add(2, topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
             }
 
             // Return a JSON response to indicate success (if needed)
             return Json(new { success = true });
         }
-
-
-
-
-
         [HttpGet]
         public ActionResult GetQuestionsByTopicchild(string topic)
         {
             QuestionDAL questionDAL = new QuestionDAL();
-            List<QuestionModel> questions = questionDAL.GetQuestions(1);
+            List<QuestionModel> questions = questionDAL.GetQuestions(2);
             QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
 
             // Return only the questions for the selected topic
