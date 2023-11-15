@@ -26,7 +26,6 @@ namespace Asst.Controllers
         }
         public ActionResult DeleteQuestions()
         {
-
             QuestionDAL questionDAL = new QuestionDAL();
             List<SelectListItem> topics = questionDAL.GetTopic();
 
