@@ -39,7 +39,7 @@ namespace Asst.DAL
                 }
                 else
                 {
-                    query = "SELECT Topic, question FROM QuestionTable";
+                    query = "SELECT Topic, question FROM QuestionTableChild";
                 }
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();

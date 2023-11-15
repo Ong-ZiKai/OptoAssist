@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Asst.Models.QuestionModel>
+﻿@model Asst.Models.AddQnModel
 @{
     ViewData["Title"] = "AddQuestions";
 
@@ -13,13 +13,15 @@
     <div class="main-content">
         <form method="post" action="/Questions/AddQuestions">
             <h5>Keyword:</h5>
-            <input class="add-qn" type="text" name="topic" placeholder="Enter a Topic">
+            <input asp-for="Topic" class="add-qn" type="text" name="topic" placeholder="Enter a Topic">
             <h5>New Question:</h5>
-            <input class="add-qn" type="text" name="question" placeholder="Enter a new question">
+            <input asp-for="Question" class="add-qn" type="text" name="question" placeholder="Enter a new question">
             <h5>For adults or children:</h5>
-            @*<input class="add-qn" type="text" name="type" placeholder="Enter 1 for children, 2 for adult">*@
+            <input asp-for="Type" type="radio" id="adults" name="type" value="2">
+            <label for="adults">Adults</label><br>
+            <input asp-for="Type" type="radio" id="children" name="type" value="1">
+            <label for="children">Children</label><br>
             <button class="new-qn" type="submit">Submit</button>
-            <span name="type">1</span>
         </form>
     </div>
 </div>

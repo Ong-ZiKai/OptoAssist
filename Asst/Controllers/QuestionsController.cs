@@ -93,8 +93,11 @@ namespace Asst.Controllers
 
 
         [HttpPost]
-        public ActionResult AddQuestions(int type, string topic, string question)
+        public ActionResult AddQuestions(AddQnModel result)
         {
+            string question = result.Question;
+            string topic = result.Topic;
+            int type = result.Type;
             QuestionDAL questionDAL = new QuestionDAL();
 
             List<QuestionModel> questions = questionDAL.GetQuestions(type);
