@@ -33,13 +33,13 @@ namespace Asst.DAL
                 conn.Open();
                 string query = "";
                 // Assuming the table structure has 'Topic' and 'question' columns
-                if (type == 2)
+                if (type == 1)
                 {
                     query = "SELECT Topic, question FROM QuestionTable";
                 }
                 else
                 {
-                    query = "SELECT Topic, question FROM QuestionTable";
+                    query = "SELECT Topic, question FROM QuestionTableChild";
                 }
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -72,7 +72,7 @@ namespace Asst.DAL
         {
             // Create a SqlCommand object from the connection object
             SqlCommand cmd = conn.CreateCommand();
-            if (type == 1)
+            if (type == 2)
             {
                 cmd.CommandText = "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
             }
