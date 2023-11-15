@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Asst.Models.Message>
+
+@{
+    ViewBag.Title = "Ask Topic";
+}
+<script>
+    window.onload = function () {
+        window.scroll({
+            top: document.body.scrollHeight,
+            left: 0,
+            behavior: 'instant'
+        });
+    };
+</script>
+@{
+    <style>
+        main{
+            color: white;
+            padding: 30px;
+        }
+        body{
+            background-color: rgb(66, 66, 66);
+        }
+    </style>
+    if (Model.ToList().Count > 0)
+    {
+        int count = 0;
+        foreach (var item in Model)
+        {
+            if (count % 2 == 1)
+            {
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-6">
+                        <div class="message user">
+                            <b>USER</b>
+                            <div class="msgcontent">@item.Content</div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col">
+                        <div class="message response">
+                            <b>OPTOASSIST</b>
+                            <div class="msgcontent">@item.Content</div>
+                        </div>
+                    </div>
+                    <div class="col-6"></div>
+                </div>
+            }
+            count++;
+        }
+    }
+}
+    <div class="row">
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+<div class="messagebar">
+    <form asp-controller="Questions" asp-action="AskQuestionschild" method="post" class="mt-3">
+        <div class="row">
+            <div class="col-2" style="height:5%"></div>
+            <div class="col-2">
+                <div class="form-group">
+                    <p style="color:white;text-align:right;">Enter a topic:</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="topic" id="topic" required />
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

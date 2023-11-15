@@ -110,16 +110,26 @@ namespace Asst.DAL
             conn.Close();
             return topic;
         }
-        public List<SelectListItem> GetTopic()
+        public List<SelectListItem> GetTopic(int type)
         {
             List<SelectListItem> topicList = new List<SelectListItem>();
 
             try
             {
+                string query = "";
                 conn.Open();
+                if (type == 1)
+                {
 
-                // Assuming the table structure has 'Topic' column
-                string query = "SELECT DISTINCT Topic FROM QuestionTable";
+
+                    // Assuming the table structure has 'Topic' column
+                     query = "SELECT DISTINCT Topic FROM QuestionTable";
+                }
+                else
+                {
+                     query = "SELECT DISTINCT Topic FROM QuestionTablechild";
+
+                }
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
