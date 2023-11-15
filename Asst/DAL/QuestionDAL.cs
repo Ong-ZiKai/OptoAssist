@@ -71,79 +71,61 @@ namespace Asst.DAL
 
         public string Add(int type, string topic, string question)
         {
-            try
+            // Create a SqlCommand object from the connection object
+            SqlCommand cmd = conn.CreateCommand();
+            if (type == 1)
             {
-                // Create a SqlCommand object from the connection object
-                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
+            }
+            else
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic";
+            }
+            cmd.Parameters.AddWithValue("@topic", topic);
+            // Open a database connection
+            conn.Open();
+
+            int existingTopicCount = (int)cmd.ExecuteScalar();
+
+            // Clear previous parameters
+            cmd.Parameters.Clear();
+
+            if (existingTopicCount > 0)
+            {
                 if (type == 1)
                 {
-                    cmd.CommandText = "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
+                    cmd.CommandText = "UPDATE QuestionTable SET question = @question WHERE topic = @topic";
                 }
                 else
                 {
-                    cmd.CommandText = "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic";
+                    cmd.CommandText = "UPDATE QuestionTableChild SET question = @question WHERE topic = @topic";
+
                 }
-                cmd.Parameters.AddWithValue("@topic", topic);
-
-                // Open a database connection
-                conn.Open();
-
-                int existingTopicCount = (int)cmd.ExecuteScalar();
-
-                // Clear previous parameters
-                cmd.Parameters.Clear();
-
-                if (existingTopicCount > 0)
+            }
+            else
+            {
+                if (type == 1)
                 {
-                    if (type == 1)
-                    {
-                        cmd.CommandText = "UPDATE QuestionTable SET question = @question WHERE topic = @topic";
-                    }
-                    else
-                    {
-                        cmd.CommandText = "UPDATE QuestionTableChild SET question = @question WHERE topic = @topic";
-                    }
+                    cmd.CommandText = "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)";
                 }
                 else
                 {
-                    if (type == 1)
-                    {
-                        cmd.CommandText = "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)";
-                    }
-                    else
-                    {
-                        cmd.CommandText = "INSERT INTO QuestionTableChild (topic, question) VALUES (@topic, @question)";
-                    }
-                }
+                    cmd.CommandText = "INSERT INTO QuestionTableChild (topic, question) VALUES (@topic, @question)";
 
-                // Define the parameters used in the SQL statement
-                cmd.Parameters.Clear(); // Clear previous parameters
-                cmd.Parameters.AddWithValue("@question", question);
-                cmd.Parameters.AddWithValue("@topic", topic);
-
-                // ExecuteNonQuery is used for UPDATE and INSERT
-                cmd.ExecuteNonQuery();
-
-                // Close the database connection
-                conn.Close();
-
-                return topic;
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (log or display an error message)
-                // Example: Log the exception to the console
-                Console.WriteLine($"Exception: {ex.Message}");
-                return null; // or throw the exception again if you want to propagate it
-            }
-            finally
-            {
-                // Make sure to close the connection in the 'finally' block
-                if (conn.State == ConnectionState.Open)
-                {
-                    conn.Close();
                 }
             }
+            // Define the parameters used in the SQL statement
+            cmd.Parameters.Clear(); // Clear previous parameters
+            cmd.Parameters.AddWithValue("@question", question);
+            cmd.Parameters.AddWithValue("@topic", topic);
+
+
+            // ExecuteNonQuery is used for UPDATE
+            cmd.ExecuteNonQuery();
+
+            // Close the database connection
+            conn.Close();
+            return topic;
         }
         public List<SelectListItem> GetTopic(int type)
         {

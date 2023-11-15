@@ -224,7 +224,7 @@ namespace Asst.Controllers
                 topicQuestions.Questions.Remove(question);
 
                 // Update the list in the database
-                questionDAL.Add(1, topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
+                questionDAL.Add(2, topic, Newtonsoft.Json.JsonConvert.SerializeObject(topicQuestions.Questions));
             }
 
             // Return a JSON response to indicate success (if needed)
