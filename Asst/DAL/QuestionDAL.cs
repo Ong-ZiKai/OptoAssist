@@ -1,11 +1,7 @@
 ﻿using Asst.Models;
-using System.Data.SqlClient;
-<<<<<<< HEAD
-=======
-using System.IO;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
->>>>>>> baa964b2795e65e768e367660eb1ba5c62811911
+using System.Data.SqlClient;
+
 
 namespace Asst.DAL
 {

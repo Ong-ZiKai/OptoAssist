@@ -1,12 +1,8 @@
 ﻿using Asst.DAL;
 using Asst.Models;
-<<<<<<< HEAD
+
 using Microsoft.AspNetCore.Mvc;
-=======
-using System.Diagnostics;
-using Asst.DAL;
 using Microsoft.AspNetCore.Mvc.Rendering;
->>>>>>> baa964b2795e65e768e367660eb1ba5c62811911
 
 namespace Asst.Controllers
 {
@@ -30,22 +26,20 @@ namespace Asst.Controllers
         }
         public ActionResult DeleteQuestions()
         {
-<<<<<<< HEAD
-            return View();
-=======
+
             QuestionDAL questionDAL = new QuestionDAL();
             List<SelectListItem> topics = questionDAL.GetTopic();
 
             // Use 'topics' as needed, pass it to the view, etc.
             ViewData["CitiesList"] = topics;
-            return View(); 
->>>>>>> baa964b2795e65e768e367660eb1ba5c62811911
+            return View();
+
         }
         [HttpGet]
         public ActionResult GetQuestionsByTopic(string topic)
         {
             QuestionDAL questionDAL = new QuestionDAL();
-            List<QuestionModel> questions = questionDAL.GetQuestions();
+            List<QuestionModel> questions = questionDAL.GetQuestions(1);
             QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
 
             // Return only the questions for the selected topic
@@ -126,7 +120,7 @@ namespace Asst.Controllers
             return RedirectToAction("AddQuestions");
         }
 
-       
+
 
     }
 }
