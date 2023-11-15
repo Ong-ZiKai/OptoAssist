@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Asst.Models.QuestionModel>
 
 @{
-    ViewBag.Title = "DeleteQuestions";
+    ViewBag.Title = "DeleteQuestionschild";
     var topics = ViewData["CitiesList"] as List<SelectListItem>;
 }
 
@@ -26,7 +26,7 @@
             </div>
         }
         <div id="questionsContainer">
-            @await Html.PartialAsync("_QuestionsPartial", Model)
+            @await Html.PartialAsync("_QuestionsPartialchild", Model)
         </div>
     </div>
 </div>
@@ -37,7 +37,7 @@
         $('#topicDropdown').change(function () {
             var selectedTopic = $(this).val();
             $.ajax({
-                url: '@Url.Action("GetQuestionsByTopic", "Questions")',
+                url: '@Url.Action("GetQuestionsByTopicchild", "Questions")',
                 type: 'GET',
                 data: { topic: selectedTopic },
                 success: function (result) {
@@ -59,7 +59,7 @@
             // Add a confirmation dialog
             if (confirm("Are you sure you want to delete this question?")) {
                 $.ajax({
-                    url: '@Url.Action("DeleteQuestion", "Questions")',
+                    url: '@Url.Action("DeleteQuestionchild", "Questions")',
                     type: 'POST',
                     data: { topic: topic, question: question },
                     success: function () {
