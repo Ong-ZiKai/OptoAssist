@@ -19,8 +19,9 @@ html {
 body {
     height: 100vh;
     margin: 0;
-    padding: 0; 
+    padding: 0;
     width: 100%;
+    color: #082b2a;
 }
 
 .startbutton {
@@ -50,17 +51,17 @@ body {
 }
 
 .user {
-    background-color: #d4edda;
+    background-color: #1c9c96;
     margin-left: 0px;
 }
 
 .response {
-    background-color: #cce5ff;
+    background-color: #26d9d0;
 }
 
 .messagebar {
     position: fixed;
-    background-color: rgba(15,15,15,0.8);
+    background-color: rgba(66, 66, 66, 0.8);
     width: 100%;
     height: 15%;
     left: 0;
@@ -121,4 +122,19 @@ td:nth-child(2) {
     font-size: 20px;
     margin-top:25px;
     margin-left: 45%;
+}
+
+.navelement {
+    color: #26d9d0;
+}
+.navelement:hover {
+    color: #1c9c96;
+}
+
+.btn-custom {
+    background-color: #26d9d0;
+    color: #082b2a;
+}
+.btn-custom:hover{
+    background-color: #1c9c96;
 }
