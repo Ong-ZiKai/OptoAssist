@@ -182,7 +182,7 @@ namespace Asst.Controllers
             List<QuestionModel> questions = questionDAL.GetQuestions(2);
             List<Message> msgList = new List<Message>();
 
-            string msgTextList = HttpContext.Session.GetString("MsgList");
+            string msgTextList = HttpContext.Session.GetString("MsgListChild");
             msgTextList += topic + "%&%";
             bool keyWordFound = false;
             foreach (var a in questions)
@@ -208,7 +208,7 @@ namespace Asst.Controllers
                 msgTextList += "Invalid topic or questions not found.";
             }
             msgTextList += "%&%";
-            HttpContext.Session.SetString("MsgList", msgTextList);
+            HttpContext.Session.SetString("MsgListChild", msgTextList);
             string[] msgArray = msgTextList.Split("%&%");
 
             msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
