@@ -110,7 +110,14 @@ namespace Asst.Controllers
                     keyWordFound = true;
                     QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(a.Topic));
                     topic = topic.Replace(a.Topic, string.Empty);
-                    msgTextList += "Here are some questions you could ask regarding the topic of " + a.Topic + ":";
+                    if (a.Topic == "history taking")
+                    {
+                        msgTextList += "Here are some steps you could follow during history taking:";
+                    }
+                    else
+                    {
+                        msgTextList += "Here are some questions you could ask regarding the topic of " + a.Topic + ":";
+                    }
                     for (int i = 0; i < topicQuestions.Questions.Count; i++)
                     {
                         msgTextList += "\n" + (i + 1).ToString() + ". " + topicQuestions.Questions[i];
@@ -196,7 +203,14 @@ namespace Asst.Controllers
                     keyWordFound = true;
                     QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(a.Topic));
                     topic = topic.Replace(a.Topic, string.Empty);
-                    msgTextList += "Here are some questions you could ask regarding the topic of " + a.Topic + ":";
+                    if (a.Topic == "history taking")
+                    {
+                        msgTextList += "Here are some steps you could follow during history taking:";
+                    }
+                    else
+                    {
+                        msgTextList += "Here are some questions you could ask regarding the topic of " + a.Topic + ":";
+                    }
                     for (int i = 0; i < topicQuestions.Questions.Count; i++)
                     {
                         msgTextList += "\n" + (i + 1).ToString() + ". " + topicQuestions.Questions[i];
