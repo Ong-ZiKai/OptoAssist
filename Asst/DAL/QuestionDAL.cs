@@ -73,58 +73,53 @@ namespace Asst.DAL
         {
             // Create a SqlCommand object from the connection object
             SqlCommand cmd = conn.CreateCommand();
-            if (type == 1)
-            {
-                cmd.CommandText = "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
-            }
-            else
-            {
-                cmd.CommandText = "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic";
-            }
-            cmd.Parameters.AddWithValue("@topic", topic);
+
             // Open a database connection
             conn.Open();
 
-            int existingTopicCount = (int)cmd.ExecuteScalar();
-
-            // Clear previous parameters
-            cmd.Parameters.Clear();
-
-            if (existingTopicCount > 0)
+            try
             {
-                if (type == 1)
+                // Define the @topic parameter
+                cmd.Parameters.AddWithValue("@topic", topic);
+
+                // Check if the topic already exists
+                cmd.CommandText = (type == 1)
+                    ? "SELECT COUNT(*) FROM QuestionTable WHERE topic = @topic"
+                    : "SELECT COUNT(*) FROM QuestionTableChild WHERE topic = @topic";
+
+                int existingTopicCount = (int)cmd.ExecuteScalar();
+
+                // Clear previous parameters
+                cmd.Parameters.Clear();
+
+                if (existingTopicCount > 0)
                 {
-                    cmd.CommandText = "UPDATE QuestionTable SET question = @question WHERE topic = @topic";
+                    // Topic already exists, update the question
+                    cmd.CommandText = (type == 1)
+                        ? "UPDATE QuestionTable SET question = @question WHERE topic = @topic"
+                        : "UPDATE QuestionTableChild SET question = @question WHERE topic = @topic";
                 }
                 else
                 {
-                    cmd.CommandText = "UPDATE QuestionTableChild SET question = @question WHERE topic = @topic";
-
+                    // Topic does not exist, insert a new row
+                    cmd.CommandText = (type == 1)
+                        ? "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)"
+                        : "INSERT INTO QuestionTableChild (topic, question) VALUES (@topic, @question)";
                 }
+
+                // Define the @question parameter
+                cmd.Parameters.AddWithValue("@question", question);
+                cmd.Parameters.AddWithValue("@topic", topic);
+
+                // ExecuteNonQuery is used for UPDATE and INSERT
+                cmd.ExecuteNonQuery();
             }
-            else
+            finally
             {
-                if (type == 1)
-                {
-                    cmd.CommandText = "INSERT INTO QuestionTable (topic, question) VALUES (@topic, @question)";
-                }
-                else
-                {
-                    cmd.CommandText = "INSERT INTO QuestionTableChild (topic, question) VALUES (@topic, @question)";
-
-                }
+                // Close the database connection in the finally block to ensure it is always closed
+                conn.Close();
             }
-            // Define the parameters used in the SQL statement
-            cmd.Parameters.Clear(); // Clear previous parameters
-            cmd.Parameters.AddWithValue("@question", question);
-            cmd.Parameters.AddWithValue("@topic", topic);
 
-
-            // ExecuteNonQuery is used for UPDATE
-            cmd.ExecuteNonQuery();
-
-            // Close the database connection
-            conn.Close();
             return topic;
         }
         public List<SelectListItem> GetTopic(int type)
