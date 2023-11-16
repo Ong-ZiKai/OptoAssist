@@ -101,7 +101,7 @@ namespace Asst.Controllers
             bool keyWordFound = false;
             foreach (var a in questions)
             {
-                if (topic.Contains(a.Topic))
+                if (topic.ToLower().Contains(a.Topic.ToLower()))
                 {
                     if (keyWordFound)
                     {
@@ -187,7 +187,7 @@ namespace Asst.Controllers
             bool keyWordFound = false;
             foreach (var a in questions)
             {
-                if (topic.Contains(a.Topic))
+                if (topic.ToLower().Contains(a.Topic.ToLower()))
                 {
                     if (keyWordFound)
                     {
