@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Humanizer;
 using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics;
 
 namespace Asst.Controllers
 {
@@ -93,30 +94,37 @@ namespace Asst.Controllers
             QuestionDAL questionDAL = new QuestionDAL();
 
             List<QuestionModel> questions = questionDAL.GetQuestions(1);
+            List<Message> msgList = new List<Message>();
 
             string msgTextList = HttpContext.Session.GetString("MsgList");
             msgTextList += topic + "%&%";
-
-            // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
-            QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
-
-            if (topicQuestions != null)
+            bool keyWordFound = false;
+            foreach (var a in questions)
             {
-                msgTextList += "Here are some questions you could ask regarding the topic of " + topic + ":";
-                for (int i = 0; i < topicQuestions.Questions.Count; i++)
+                if (topic.Contains(a.Topic))
                 {
-                    msgTextList += "\n" + (i + 1).ToString() + ". " + topicQuestions.Questions[i];
+                    if (keyWordFound)
+                    {
+                        msgTextList += "\n\n";
+                    }
+                    keyWordFound = true;
+                    QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(a.Topic));
+                    topic = topic.Replace(a.Topic, string.Empty);
+                    msgTextList += "Here are some questions you could ask regarding the topic of " + a.Topic + ":";
+                    for (int i = 0; i < topicQuestions.Questions.Count; i++)
+                    {
+                        msgTextList += "\n" + (i + 1).ToString() + ". " + topicQuestions.Questions[i];
+                    }
                 }
-                msgTextList += "%&%";
             }
-            else
+            if (!keyWordFound)
             {
-                msgTextList += "Invalid topic or questions not found.%&%";
+                msgTextList += "Invalid topic or questions not found.";
             }
-
+            msgTextList += "%&%";
             HttpContext.Session.SetString("MsgList", msgTextList);
             string[] msgArray = msgTextList.Split("%&%");
-            List<Message> msgList = new List<Message>();
+
             msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
             for (int i = 0; i < msgArray.Length - 1; i++)
             {
@@ -124,6 +132,11 @@ namespace Asst.Controllers
             }
 
             return View(msgList);
+
+            // Handle the case where none of the topics match
+            // ... your existing code for handling a single topic without spaces
+
+            return View();
         }
 
 
@@ -167,30 +180,37 @@ namespace Asst.Controllers
             QuestionDAL questionDAL = new QuestionDAL();
 
             List<QuestionModel> questions = questionDAL.GetQuestions(2);
-
-            string msgTextList = HttpContext.Session.GetString("MsgListChild");
-            msgTextList += topic + "%&%";
-
-            // Assuming questions is a Dictionary<string, List<string>> where the key is the topic
-            QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(topic));
-
-            if (topicQuestions != null)
-            {
-                msgTextList += "Here are some questions you could ask regarding the topic of " + topic + ":";
-                for (int i = 0; i < topicQuestions.Questions.Count; i++)
-                {
-                    msgTextList += "\n" + (i + 1).ToString() + ". " + topicQuestions.Questions[i];
-                }
-                msgTextList += "%&%";
-            }
-            else
-            {
-                msgTextList += "Invalid topic or questions not found.%&%";
-            }
-
-            HttpContext.Session.SetString("MsgListChild", msgTextList);
-            string[] msgArray = msgTextList.Split("%&%");
             List<Message> msgList = new List<Message>();
+
+            string msgTextList = HttpContext.Session.GetString("MsgList");
+            msgTextList += topic + "%&%";
+            bool keyWordFound = false;
+            foreach (var a in questions)
+            {
+                if (topic.Contains(a.Topic))
+                {
+                    if (keyWordFound)
+                    {
+                        msgTextList += "\n\n";
+                    }
+                    keyWordFound = true;
+                    QuestionModel topicQuestions = questions.FirstOrDefault(q => q.Topic.Equals(a.Topic));
+                    topic = topic.Replace(a.Topic, string.Empty);
+                    msgTextList += "Here are some questions you could ask regarding the topic of " + a.Topic + ":";
+                    for (int i = 0; i < topicQuestions.Questions.Count; i++)
+                    {
+                        msgTextList += "\n" + (i + 1).ToString() + ". " + topicQuestions.Questions[i];
+                    }
+                }
+            }
+            if (!keyWordFound)
+            {
+                msgTextList += "Invalid topic or questions not found.";
+            }
+            msgTextList += "%&%";
+            HttpContext.Session.SetString("MsgList", msgTextList);
+            string[] msgArray = msgTextList.Split("%&%");
+
             msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
             for (int i = 0; i < msgArray.Length - 1; i++)
             {
@@ -198,6 +218,11 @@ namespace Asst.Controllers
             }
 
             return View(msgList);
+
+            // Handle the case where none of the topics match
+            // ... your existing code for handling a single topic without spaces
+
+            return View();
         }
         public ActionResult DeleteQuestionschild()
         {
