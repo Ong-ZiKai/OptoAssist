@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid" style="position: fixed; padding: 0px"
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark" style="z-index:10">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
@@ -52,15 +52,17 @@
                     <hr>
                 </div>
             </div>
-            <div class="container" style="padding:0 0 0 0;;">
-                <main role="main" class="pb-3">
-                        @RenderBody()
-                </main>
-            </div>
+
         </div>
     </div>
 
 
+
+    <div class="container" style="padding:0 0 0 0;;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
     @*<footer class="border-top footer text-muted">
         <div class="container">
