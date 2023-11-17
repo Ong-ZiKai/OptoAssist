@@ -126,7 +126,7 @@ namespace Asst.Controllers
             }
             if (!keyWordFound)
             {
-                msgTextList += "Invalid topic or questions not found.";
+                msgTextList += "Sorry, I couldn't find any topics relating to your sentence.";
             }
             msgTextList += "%&%";
             HttpContext.Session.SetString("MsgList", msgTextList);
@@ -219,7 +219,7 @@ namespace Asst.Controllers
             }
             if (!keyWordFound)
             {
-                msgTextList += "Invalid topic or questions not found.";
+                msgTextList += "Sorry, I couldn't find any topics relating to your sentence.";
             }
             msgTextList += "%&%";
             HttpContext.Session.SetString("MsgListChild", msgTextList);
