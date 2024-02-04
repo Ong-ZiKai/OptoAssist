@@ -57,18 +57,19 @@ VALUES
 
 CREATE TABLE QuizQn (
     qnID INT PRIMARY KEY,
-    qnText VARCHAR(1000),
+    qnText VARCHAR(1000), -- Question Content
     qnImage VARCHAR(255), -- Stores path of image to be used
-    qnCat VARCHAR(100),
-	qnAns VARCHAR(1000)
+    qnCat VARCHAR(100), -- Question Category
+	qnKeywords VARCHAR(1000), -- Keywords to be used for checking of player responses; A player's response is considered correct if it contains any keyword
+	qnAns VARCHAR(1000) -- Model answer(s) to be displayed after a response is submitted
 );
 
-INSERT INTO QuizQn (qnID, qnText, qnImage, qnCat, qnAns) VALUES
-(1, 'A patient complains of redness and irritation in their left eye. What follow-up question would you ask?', NULL, 'Eye Conditions', 'duration,how long,pain,severity,vision'),
-(2, 'A patient reports a family history of glaucoma. How would you further inquire about this?', NULL, 'Medical History', 'details,elaborate,family history,age'),
-(3, 'A patient experiences sudden vision loss in one eye. What follow-up question would you pose?', NULL, 'Eye Conditions', 'recurring,duration,timing,how long,other symptoms,accompanying symptoms'),
-(4, 'A patient complains of seeing floating specks or cobwebs in their vision. What follow-up question would you ask?', NULL, 'Eye Conditions', 'onset,duration,how long,accompanying symptoms,appearance,movement,fixed'),
-(5, 'A patient with a history of diabetes reports blurry vision. How would you explore this symptom further?', NULL, 'Eye Conditions', 'duration,severity,association,blood sugar,medication');
+INSERT INTO QuizQn (qnID, qnText, qnImage, qnCat, qnKeywords, qnAns) VALUES
+(1, 'A patient complains of redness and irritation in their left eye. What follow-up question would you ask?', NULL, 'Eye Conditions', 'duration,how long,pain,how severe,severity,vision', 'How long have these symptoms persisted for?;What is the severity of your pain?;Have you noticed any discharge or changes in your vision?'),
+(2, 'A patient reports a family history of glaucoma. How would you further inquire about this?', NULL, 'Medical History', 'details,elaborate,family history,age', 'Could you provide more details about your family''s history of glaucoma?;Which of your family members have been affected, and at what age were they diagnosed?'),
+(3, 'A patient experiences sudden vision loss in one eye. What follow-up question would you pose?', NULL, 'Eye Conditions', 'recurring,duration,timing,how long,other symptoms,accompanying symptoms', 'When did you first notice the sudden vision loss in your eye?;Have you experienced any other symptoms along with the vision loss?'),
+(4, 'A patient complains of seeing floating specks or cobwebs in their vision. What follow-up question would you ask?', NULL, 'Eye Conditions', 'onset,duration,how long,other symptoms,accompanying symptoms,appearance,move,fixed', 'Can you describe the appearance of these floating specks in your vision?;Do these floating specks move with your eye or stay in a fixed position?;Have you noticed any other symptoms accompanying these specks?'),
+(5, 'A patient with a history of diabetes reports blurry vision. How would you explore this symptom further?', NULL, 'Eye Conditions', 'duration,severity,association,blood sugar,medication,lifestyle changes,changes in lifestyle', 'How long have you been experiencing blurry vision?;Have you noticed any fluctuations in your blood sugar levels recently?;Are you currently managing your diabetes with any medication or lifestyle changes?');
 
 select * from dbo.QuestionTable
 select * from dbo.QuestionTableChild

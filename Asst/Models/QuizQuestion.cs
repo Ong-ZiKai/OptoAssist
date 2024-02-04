@@ -6,6 +6,7 @@
         public string content { get; set; }
         public string image { get; set; }
         public string category { get; set; }
+        public List<string> keywords { get; set; }
         public List<string> answers { get; set; }
     }
 }

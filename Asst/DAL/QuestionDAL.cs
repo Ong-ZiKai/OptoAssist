@@ -175,7 +175,8 @@ namespace Asst.DAL
                         content = reader["qnText"].ToString(),
                         image = reader["qnImage"].ToString(),
                         category = reader["qnCat"].ToString(),
-                        answers = reader["qnAns"].ToString().Split(",").ToList()
+                        keywords = reader["qnKeywords"].ToString().Split(",").ToList(),
+                        answers = reader["qnAns"].ToString().Split(";").ToList()
                     });
                 }
             }

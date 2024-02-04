@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Asst.Models.QuizQuestion>
 @{
-	ViewData["Title"] = "Improve Your History-taking Skills!";
+    ViewData["Title"] = "Improve Your History-taking Skills!";
 }
 <style>
     body {
@@ -24,7 +24,7 @@
         var correctAnswersCount = 0;
         var categoryStats = {};
 
-        // Display game info and form for number of questions
+        // Display game info and form for the number of questions
         $("#game").html("<p>Gauge the extent of your history-taking abilities with this short quiz!</p>" + 
             "<p>Each question presents a different scenario, in which patients' symptoms are detailed.</p>" + 
             "<p>You are to respond with a follow-up question you find most appropriate for each scenario.</p><br/>" +
@@ -64,11 +64,10 @@
             // Add click event handler for the submit button
             $("#submitAnswer" + index).click(function () {
                 var userAnswer = $("#answerInput" + index).val();
-                if (userAnswer == ""){
+                if (userAnswer == "") {
                     alert("Please enter a response before submitting your answer.");
-                }
-                else{
-                    var answerKeywords = questions[index].answers; // Retrieve keywords from the questions variable
+                } else {
+                    var answerKeywords = questions[index].keywords; // Retrieve keywords from the questions variable
 
                     // Disable input and submit button after answering
                     $("#answerInput" + index).prop("disabled", true);
@@ -88,27 +87,45 @@
                         $("#game").append("<p>Incorrect Answer.</p>");
                     }
 
-                    // Add button to progress to the next question or display the score
-                    if (index + 1 < numQuestions) {
-                        $("#game").append("<button class='gamebutton' id='nextQuestion" + index + "'>Next Question</button>");
-                        // Add click event handler for the next question button
-                        $("#nextQuestion" + index).click(function () {
-                            currentIndex++;
-                            displayQuestion(currentIndex);
-                        });
-                    }
-                    else {
-                        // All questions have been answered, display the score and category-wise percentages
-                        $("#game").append("<p>Your Score: <b>" + correctAnswersCount + " out of " + numQuestions + "</b></p>");
+                    var answers = questions[index].answers; // Retrieve model answers from the questions variable
 
-                        // Display category-wise percentages
-                        Object.keys(categoryStats).forEach(function (category) {
-                            var categoryInfo = categoryStats[category];
-                            var percentage = (categoryInfo.correct / categoryInfo.total) * 100 || 0;
-                            $("#game").append("<p>Category '" + category + "' - Correct Percentage: <b>" + percentage.toFixed(2) + "%</b></p>");
+                    // Add button to show answers
+                    $("#game").append("<button class='gamebutton' id='showAnswers" + index + "'>Show Model Answers</button>");
+
+                    // Add click event handler for the show answers button
+                    $("#showAnswers" + index).click(function () {
+                        // Display model answers
+                        $("#game").append("<p><strong>Model Answers:</strong></p>");
+                        $("#game").append("<ul>");
+                        answers.forEach(function (modelAnswer) {
+                            $("#game").append("<li>" + modelAnswer + "</li>");
                         });
-                        $("#game").append("<p>Thank you for playing!</p>");
-                    }
+                        $("#game").append("</ul><br/>");
+
+                        // Remove the show answers button
+                        $("#showAnswers" + index).remove();
+
+                        // Add button to progress to the next question or display the score
+                        if (index + 1 < numQuestions) {
+                            $("#game").append("<button class='gamebutton' id='nextQuestion" + index + "'>Next Question</button>");
+                            // Add click event handler for the next question button
+                            $("#nextQuestion" + index).click(function () {
+                                currentIndex++;
+                                displayQuestion(currentIndex);
+                            });
+                        } else {
+                            // All questions have been answered, display the score and category-wise percentages
+                            $("#game").append("<p>Your Score: <b>" + correctAnswersCount + " out of " + numQuestions + "</b></p>");
+
+                            // Display category-wise percentages
+                            Object.keys(categoryStats).forEach(function (category) {
+                                var categoryInfo = categoryStats[category];
+                                var percentage = (categoryInfo.correct / categoryInfo.total) * 100 || 0;
+                                $("#game").append("<p>Category '" + category + "' - Correct Percentage: <b>" + percentage.toFixed(2) + "%</b></p>");
+                            });
+                            $("#game").append("<p>Thank you for playing!</p>");
+                        }
+                    });
                 }
             });
         }
