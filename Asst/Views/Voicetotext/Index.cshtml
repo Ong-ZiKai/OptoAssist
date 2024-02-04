@@ -3,13 +3,30 @@
 <head>
     <title>Speech-to-Text Demo</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+       
+        #output {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h2>Speech-to-Text </h2>
+    <div id="button">
+        <h2>Speech-to-Text </h2>
 
-    <button id="startButton">Start Recording</button>
-    <button id="stopButton" disabled>Stop Recording</button>
+        <button id="startButton"> Start Recording </button>
+        <br />
+        <button style="background-color:lightcoral" id="stopButton" disabled> Stop Recording </button>
 
+    </div>
+   
     <div id="output"></div>
 
     <script>
@@ -64,9 +81,12 @@
             console.log(recognizedWords); // Checking the log to see complete conversation output (talk, click inspect, then click console on the webpage)
 
             outputDiv.innerHTML = "<strong>Conversation Output:</strong><br>" + recognizedWords.join('<br>');
-            const containsHowLongIs = recognizedWords.some(word => word.toLowerCase().includes("how long"));
-
-            if (containsHowLongIs) {
+            const containsHowLong = recognizedWords.some(word => word.toLowerCase().includes("how long"));
+            const containseyeitchy = recognizedWords.some(word => word.toLowerCase().includes("eye Itchy"));
+            if (containseyeitchy) {
+                outputDiv.innerHTML += "<br><br><strong>Recommendation:</strong> ask which region of the eyes it comes from";
+            }
+            if (containsHowLong) {
                 outputDiv.innerHTML += "<br><br><strong>Recommendation:</strong> If asking about a duration, provide specific details such as what you want to measure the duration of or additional context for a more accurate response.";
             }
         }
