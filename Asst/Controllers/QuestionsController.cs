@@ -34,7 +34,14 @@ namespace Asst.Controllers
             string msgTextList = " " + HttpContext.Session.GetString("MsgListChild");
             string[] msgArray = msgTextList.Split("%&%");
             List<Message> msgList = new List<Message>();
-            msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
+            msgList.Add(new Message {
+                Content = "Welcome to OptoAssist! \n " +
+                "A training tool to help you become a history taking expert! \n" +
+                "\n to introduce you to history taking, this is the main structure that you would want to know as an optometrist for history taking: \n" +
+                "\n OLDCARTS:\n Onset - Acute vs gradual\n Location \n Duration\n Characteristics\n Aggravating factors \n Relieving factors\n Treatments\n Severity" +
+                "\n\nFor more enquiries, just ask us based on the type of symptom you would like to ask! \n\n" +
+                "How can I help you today?"
+            });
             for (int i = 0; i < msgArray.Length - 1; i++)
             {
                 msgList.Add(new Message { Content = msgArray[i] });
@@ -137,7 +144,14 @@ namespace Asst.Controllers
             HttpContext.Session.SetString("MsgList", msgTextList);
             string[] msgArray = msgTextList.Split("%&%");
 
-            msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
+            msgList.Add(new Message {
+                Content = "Welcome to OptoAssist! \n " +
+                "A training tool to help you become a history taking expert! \n" +
+                "\n to introduce you to history taking, this is the main structure that you would want to know as an optometrist for history taking: \n" +
+                "\n OLDCARTS:\n Onset - Acute vs gradual\n Location \n Duration\n Characteristics\n Aggravating factors \n Relieving factors\n Treatments\n Severity" +
+                "\n\nFor more enquiries, just ask us based on the type of symptom you would like to ask! \n\n" +
+                "How can I help you today?"
+            });
             for (int i = 0; i < msgArray.Length - 1; i++)
             {
                 msgList.Add(new Message { Content = msgArray[i] });
@@ -230,7 +244,14 @@ namespace Asst.Controllers
             HttpContext.Session.SetString("MsgListChild", msgTextList);
             string[] msgArray = msgTextList.Split("%&%");
 
-            msgList.Add(new Message { Content = "Welcome to OptoAssist! How can I help you today?" });
+            msgList.Add(new Message {
+                Content = "Welcome to OptoAssist! \n " +
+                "A training tool to help you become a history taking expert! \n" +
+                "\n to introduce you to history taking, this is the main structure that you would want to know as an optometrist for history taking: \n" +
+                "\n OLDCARTS:\n Onset - Acute vs gradual\n Location \n Duration\n Characteristics\n Aggravating factors \n Relieving factors\n Treatments\n Severity" +
+                "\n\nFor more enquiries, just ask us based on the type of symptom you would like to ask! \n\n" +
+                "How can I help you today?"
+            });
             for (int i = 0; i < msgArray.Length - 1; i++)
             {
                 msgList.Add(new Message { Content = msgArray[i] });
