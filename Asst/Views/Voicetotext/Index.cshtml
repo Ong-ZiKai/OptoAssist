@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Speech-to-Text Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h2>Speech-to-Text </h2>
+
+    <button id="startButton">Start Recording</button>
+    <button id="stopButton" disabled>Stop Recording</button>
+
+    <div id="output"></div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const outputDiv = document.getElementById('output');
+        let recognition;
+        let recognizedWords = [];
+        let StopRecording; //Creates a limit to how long you can record
+
+        startButton.addEventListener('click', startRecording);
+        stopButton.addEventListener('click', stopRecording);
+
+        function startRecording() {
+            recognition = new webkitSpeechRecognition(); //New recognition toolkit ASR(Automatic speech recognition) IS A PART OF NLP
+            recognition.continuous = true;      //NOTE: Webkit may not solve the default parameters that JS procs, we call this Talking noting procs
+            recognition.interimResults = true;  //AKA JS Takes the words I say too fast and notes them down, thats how you get dup and duplic, too fast taking notes down (UNFIXABLE)
+
+            recognition.onresult = function (event) {
+                const allWords = [];
+                for (let i = 0; i < event.results.length; i++) { //Grabbing each iteration of Javascripts "Talking noting proc" and immediately filtering out notes that JS took that may be wrong (dup/duplic)
+                    const segment = event.results[i];
+                    for (let j = 0; j < segment.length; j++) {
+                        const word = segment[j].transcript.trim();
+                        allWords.push(word);
+                    }
+                }
+
+                recognizedWords = filterDuplicates(allWords); //Process of only taking recognisable words and only using those
+
+
+                clearTimeout(StopRecording);
+                StopRecording = setTimeout(stopRecording, 100000); //The limit is set to 100 seconds(can be increased) 1000 = 1 second
+            };
+
+            recognition.onend = function () {
+                stopButton.disabled = true;
+                startButton.disabled = false;
+            };
+
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            recognition.start();
+        }
+
+        function stopRecording() {
+            recognition.stop();
+            startButton.disabled = false;
+            stopButton.disabled = true;
+
+            console.log("FULL THING");
+            console.log(recognizedWords); // Checking the log to see complete conversation output (talk, click inspect, then click console on the webpage)
+
+            outputDiv.innerHTML = "<strong>Conversation Output:</strong><br>" + recognizedWords.join('<br>');
+            const containsHowLongIs = recognizedWords.some(word => word.toLowerCase().includes("how long"));
+
+            if (containsHowLongIs) {
+                outputDiv.innerHTML += "<br><br><strong>Recommendation:</strong> If asking about a duration, provide specific details such as what you want to measure the duration of or additional context for a more accurate response.";
+            }
+        }
+
+
+        function filterDuplicates(words) { //Filters any sub words (Normally dup,duplic and duplicated will be added in. Now only the latter will be added)
+            const uniqueWords = words.filter((word, index, self) => self.indexOf(word) === index);
+            return uniqueWords;
+        }
+    </script>
+</body>
+</html>
