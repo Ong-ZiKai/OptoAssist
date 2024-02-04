@@ -284,5 +284,12 @@ namespace Asst.Controllers
             // Return only the questions for the selected topic
             return PartialView("_QuestionsPartialchild", topicQuestions?.Questions);
         }
+
+        public ActionResult QuizGame()
+        {
+            QuestionDAL questionDAL = new QuestionDAL();
+            List<QuizQuestion> quizqns = questionDAL.GetQuizQuestions();
+            return View(quizqns);
+        }
     }
 }

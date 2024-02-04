@@ -1,0 +1,147 @@
+﻿@model IEnumerable<Asst.Models.QuizQuestion>
+@{
+	ViewData["Title"] = "Improve Your History-taking Skills!";
+}
+<style>
+    body {
+        overflow: hidden;
+    }
+</style>
+<div class="gamecontainer">
+    <div class="gamebody p-4">
+        <h2>Improve Your History-taking Skills!</h2>
+        <div id="game"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var maxQuestions = @Model.Count();
+        var numQuestions;
+        var questions;
+        var currentIndex = 0;
+        var correctAnswersCount = 0;
+        var categoryStats = {};
+
+        // Display game info and form for number of questions
+        $("#game").html("<p>Gauge the extent of your history-taking abilities with this short quiz!</p>" + 
+            "<p>Each question presents a different scenario, in which patients' symptoms are detailed.</p>" + 
+            "<p>You are to respond with a follow-up question you find most appropriate for each scenario.</p><br/>" +
+            "<p>Good luck!</p>" + 
+            "<label for='numQuestionsInput'>Select Number of Questions (Max " + maxQuestions + "):&nbsp;</label>" +
+            "<input type='number' id='numQuestionsInput' name='numQuestionsInput' min='1' max='" + maxQuestions + "' value='" + maxQuestions + "'><br/><br/>" +
+            "<button class='gamebutton' id='startQuiz'>Start Quiz</button>");
+
+        // Event handler for starting the quiz
+        $("#startQuiz").click(function () {
+            numQuestions = $("#numQuestionsInput").val();
+
+            if (numQuestions > 0 && numQuestions <= maxQuestions) {
+                // Randomly select questions
+                questions = shuffleQuestions(@Html.Raw(Json.Serialize(Model)), numQuestions);
+
+                // Display the first question
+                displayQuestion(currentIndex);
+            } else {
+                alert("Please enter a valid number of questions.");
+            }
+        });
+
+        function displayQuestion(index) {
+            var questionContent = questions[index].content;
+
+            // Display question content
+            $("#game").html("<p><strong>Question " + (index + 1) + ":</strong> " + questionContent + "</p>");
+
+            // Display input form
+            $("#game").append("<div><label for='answerInput" + index + "'>Your Answer:&nbsp;</label>" +
+                "<input type='text' id='answerInput" + index + "' name='answerInput" + index + "'></div><br/>");
+
+            // Add submit button for the current question
+            $("#game").append("<button class='gamebutton' id='submitAnswer" + index + "'>Submit Answer</button>");
+
+            // Add click event handler for the submit button
+            $("#submitAnswer" + index).click(function () {
+                var userAnswer = $("#answerInput" + index).val();
+                if (userAnswer == ""){
+                    alert("Please enter a response before submitting your answer.");
+                }
+                else{
+                    var answerKeywords = questions[index].answers; // Retrieve keywords from the questions variable
+
+                    // Disable input and submit button after answering
+                    $("#answerInput" + index).prop("disabled", true);
+                    $("#submitAnswer" + index).prop("disabled", true);
+
+                    // Compare user's answer with keywords in the question's answer
+                    var isCorrect = checkAnswer(userAnswer, answerKeywords);
+
+                    // Update category statistics
+                    updateCategoryStats(questions[index].category, isCorrect);
+
+                    // Display feedback message based on correctness
+                    if (isCorrect) {
+                        correctAnswersCount++;
+                        $("#game").append("<p>Well Done! Your answer is correct.</p>");
+                    } else {
+                        $("#game").append("<p>Incorrect Answer.</p>");
+                    }
+
+                    // Add button to progress to the next question or display the score
+                    if (index + 1 < numQuestions) {
+                        $("#game").append("<button class='gamebutton' id='nextQuestion" + index + "'>Next Question</button>");
+                        // Add click event handler for the next question button
+                        $("#nextQuestion" + index).click(function () {
+                            currentIndex++;
+                            displayQuestion(currentIndex);
+                        });
+                    }
+                    else {
+                        // All questions have been answered, display the score and category-wise percentages
+                        $("#game").append("<p>Your Score: <b>" + correctAnswersCount + " out of " + numQuestions + "</b></p>");
+
+                        // Display category-wise percentages
+                        Object.keys(categoryStats).forEach(function (category) {
+                            var categoryInfo = categoryStats[category];
+                            var percentage = (categoryInfo.correct / categoryInfo.total) * 100 || 0;
+                            $("#game").append("<p>Category '" + category + "' - Correct Percentage: <b>" + percentage.toFixed(2) + "%</b></p>");
+                        });
+                        $("#game").append("<p>Thank you for playing!</p>");
+                    }
+                }
+            });
+        }
+
+        // Function to check if the user's answer contains keywords
+        function checkAnswer(userAnswer, answerKeywords) {
+            var userAnswerLowerCase = userAnswer.toLowerCase();
+            return answerKeywords.some(keyword => userAnswerLowerCase.includes(keyword.toLowerCase()));
+        }
+
+        // Function to update category statistics
+        function updateCategoryStats(category, isCorrect) {
+            if (!categoryStats[category]) {
+                categoryStats[category] = { total: 0, correct: 0 };
+            }
+
+            categoryStats[category].total++;
+            if (isCorrect) {
+                categoryStats[category].correct++;
+            }
+        }
+
+        // Function to shuffle questions and select a specified number
+        function shuffleQuestions(questions, numToSelect) {
+            var shuffledQuestions = questions.slice(); // Create a copy of the array
+            for (var i = shuffledQuestions.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                // Swap elements
+                var temp = shuffledQuestions[i];
+                shuffledQuestions[i] = shuffledQuestions[j];
+                shuffledQuestions[j] = temp;
+            }
+            return shuffledQuestions.slice(0, numToSelect);
+        }
+    });
+</script>

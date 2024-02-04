@@ -158,8 +158,33 @@ namespace Asst.DAL
 
             return topicList;
         }
-
-
+        public List<QuizQuestion> GetQuizQuestions()
+        {
+            List<QuizQuestion> qnList = new List<QuizQuestion>();
+            try
+            {
+                conn.Open();
+                string query = "SELECT * FROM QuizQn";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    qnList.Add(new QuizQuestion
+                    {
+                        id = Convert.ToInt32(reader["qnID"]),
+                        content = reader["qnText"].ToString(),
+                        image = reader["qnImage"].ToString(),
+                        category = reader["qnCat"].ToString(),
+                        answers = reader["qnAns"].ToString().Split(",").ToList()
+                    });
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return qnList;
+        }
     }
 
 }

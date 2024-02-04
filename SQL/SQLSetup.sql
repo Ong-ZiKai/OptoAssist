@@ -55,10 +55,24 @@ VALUES
 ('myopia','["When did you first notice that things far away were blurry?","Was there a specific time or event?","Can you show me or describe where you notice the blurriness?","Is it more in one eye than the other?","How long does your vision stay blurry when you''re trying to see things far away?","Can you explain what it''s like when things are blurry?","Is it like seeing things through a fog, or is it different?"]'),
 ('allergies','["When did you first notice any problems with your eyes related to allergies?","Was there a specific time or situation?","Can you show me or describe where you feel the discomfort or irritation in your eyes when allergies act up?","How long do the symptoms last each time you experience an allergic reaction?","Is it a constant issue or does it come and go?","Is it itching, burning, or something else?"]');
 
+CREATE TABLE QuizQn (
+    qnID INT PRIMARY KEY,
+    qnText VARCHAR(1000),
+    qnImage VARCHAR(255), -- Stores path of image to be used
+    qnCat VARCHAR(100),
+	qnAns VARCHAR(1000)
+);
+
+INSERT INTO QuizQn (qnID, qnText, qnImage, qnCat, qnAns) VALUES
+(1, 'A patient complains of redness and irritation in their left eye. What follow-up question would you ask?', NULL, 'Eye Conditions', 'duration,how long,pain,severity,vision'),
+(2, 'A patient reports a family history of glaucoma. How would you further inquire about this?', NULL, 'Medical History', 'details,elaborate,family history,age'),
+(3, 'A patient experiences sudden vision loss in one eye. What follow-up question would you pose?', NULL, 'Eye Conditions', 'recurring,duration,timing,how long,other symptoms,accompanying symptoms'),
+(4, 'A patient complains of seeing floating specks or cobwebs in their vision. What follow-up question would you ask?', NULL, 'Eye Conditions', 'onset,duration,how long,accompanying symptoms,appearance,movement,fixed'),
+(5, 'A patient with a history of diabetes reports blurry vision. How would you explore this symptom further?', NULL, 'Eye Conditions', 'duration,severity,association,blood sugar,medication');
+
 select * from dbo.QuestionTable
 select * from dbo.QuestionTableChild
-
-
+select * from QuizQn;
 
 --DROP TRIGGER IF EXISTS t_AdultTable_delete;
 --GO

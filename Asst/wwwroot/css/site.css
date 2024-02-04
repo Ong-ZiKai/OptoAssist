@@ -22,6 +22,7 @@ body {
     padding: 0;
     width: 100%;
     color: #082b2a;
+    background-color: #d4f7f6;
 }
 
 .message {
@@ -131,4 +132,21 @@ td:nth-child(2) {
 }
 .btn-custom:hover{
     background-color: #1c9c96;
+}
+.gamebody {
+    background-color: #26d9d0;
+    border-radius: 12px;
+}
+.gamebutton {
+    background-color: #1c9c96;
+    border-radius: 2px;
+    border-width:1px;
+    padding:2px 2px 2px 2px;
+}
+.gamecontainer {
+    height: 100vh;
+    width: 83.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
